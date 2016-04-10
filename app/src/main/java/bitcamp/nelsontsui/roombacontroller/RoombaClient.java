@@ -19,9 +19,11 @@ import java.net.UnknownHostException;
  * Created by Nelnel33 on 4/9/16.
  */
 public class RoombaClient extends AsyncTask<Void,Void,Void> {
-    String hostName = "10.102.185.195";
+    String hostName = "10.105.199.182";
     int portNumber = 4444;
     boolean fromUser[];
+
+    boolean onStop;
 
     public static final int FORWARD = 0;
     public static final int BACK = 1;
@@ -31,6 +33,7 @@ public class RoombaClient extends AsyncTask<Void,Void,Void> {
 
     public RoombaClient(){
         fromUser = new boolean[4];
+        onStop = false;
         resetFromUser();
         Log.v("Initialize Client", "init client");
         //this.execute();
@@ -50,6 +53,10 @@ public class RoombaClient extends AsyncTask<Void,Void,Void> {
         for(int i=0;i<fromUser.length;i++){
             fromUser[i] = false;
         }
+    }
+
+    public void setOnStop(){
+        onStop = true;
     }
 
     public void client(){
@@ -79,20 +86,26 @@ public class RoombaClient extends AsyncTask<Void,Void,Void> {
                 //}
 
                 //fromUser = stdIn.readLine();
+                if(onStop){
+                    out.println("quit");
+                }
+
                 if (fromUser != null) {
                     //Log.v("Client: ", fromUser);
                     if(fromUser[FORWARD]){
-                        out.println("FORWARD");
+                        out.println("forward");
                     }
                     if(fromUser[BACK]){
-                        out.println("BACK");
+                        out.println("back");
                     }
                     if(fromUser[LEFT]){
-                        out.println("LEFT");
+                        out.println("left");
                     }
                     if(fromUser[RIGHT]){
-                        out.println("RIGHT");
+                        out.println("right");
                     }
+
+                    Thread.sleep(100);
                     //out.flush();
                 }
             }
@@ -107,6 +120,8 @@ public class RoombaClient extends AsyncTask<Void,Void,Void> {
             Log.v("IOException ", "Couldn't get I/O for the connection to " +
                     hostName);
             System.exit(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }

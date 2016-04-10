@@ -138,6 +138,14 @@ public class RoombaController extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy(){
+        super.onDestroy();
+
+        client.setOnStop();
+
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_roomba_controller, menu);
