@@ -1,5 +1,7 @@
 from roomba.create2 import Create2
+from foscam.foscam	import camera_factory
 import time
+
 
 r = Create2()
 r.start()
@@ -7,6 +9,7 @@ r.safe()
 time.sleep(2)
 user_input = raw_input("Enter a command:")
 while(user_input != "quit"):
+	
 	if(user_input == "forward"):
 		r.straight(50)
 		time.sleep(1)
@@ -26,5 +29,7 @@ while(user_input != "quit"):
 	else:
 		print("Please enter, \"left\", \"right\", \"forward\", or \"backward\"")
 
+
 	user_input = raw_input("Enter a command:")
+
 r.stop()
