@@ -19,7 +19,7 @@ import java.net.UnknownHostException;
  */
 public class ExampleClient {
     
-    String hostName = "10.102.185.195";
+    String hostName = "10.105.199.182";
     int portNumber = 4444;
     
     public void Client(){
