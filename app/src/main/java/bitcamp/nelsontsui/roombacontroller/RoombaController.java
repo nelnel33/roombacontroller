@@ -15,15 +15,24 @@ public class RoombaController extends AppCompatActivity {
     private boolean touchLeft;
     private boolean touchRight;
 
-
+    RoombaClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_roomba_controller);
 
+        Log.v("-- ", "onCreate");
+
+        initClient();
         initTouchVariables();
         controlMovement();
+    }
+
+    private void initClient(){
+        Log.v("-- ", "in initClient method");
+        client = new RoombaClient();
+        client.execute();
     }
 
     private void initTouchVariables(){
@@ -51,10 +60,10 @@ public class RoombaController extends AppCompatActivity {
                 float x = event.getX(); //x of where you tapped
                 float y = event.getY(); //y of where you tapped
 
-                int vd = ch/3; //vertical difference
-                int hd = cw/2; //horizontal difference
+                int vd = ch / 3; //vertical difference
+                int hd = cw / 2; //horizontal difference
 
-                if(action != MotionEvent.ACTION_UP) {
+                if (action != MotionEvent.ACTION_UP) {
                     if (y >= 0 && y <= vd) {
                         //top button -- (between 0 and 0+vd)
                         //System.out.println("Forward(upward) button");
@@ -94,51 +103,38 @@ public class RoombaController extends AppCompatActivity {
                         System.out.println("Invalid tap! [y-value invalid]");
                         initTouchVariables();
                     }
-                }
-                else{
+                } else {
                     //make everything false
 
                     initTouchVariables();
                     System.out.println("Touch release");
                 }
 
+                //reset all booleans
+                client.resetFromUser();
+
                 //execute based on touch variables
-                if(touchUp){
-                    forward();
+                if (touchUp) {
                     Log.v("Movement ", "Up/Forward");
+                    client.setFromUser(RoombaClient.FORWARD, true);
                 }
-                if(touchDown){
-                    backward();
+                if (touchDown) {
                     Log.v("Movement ", "Down/Backward");
+                    client.setFromUser(RoombaClient.BACK, true);
                 }
-                if(touchLeft){
-                    rotateLeft();
+                if (touchLeft) {
                     Log.v("Movement ", "Rotate Left");
+                    client.setFromUser(RoombaClient.LEFT, true);
                 }
-                if(touchRight){
-                    rotateRight();
+                if (touchRight) {
                     Log.v("Movement ", "Rotate Right");
+                    client.setFromUser(RoombaClient.RIGHT, true);
                 }
+
 
                 return true;
             }
         });
-    }
-
-    private void forward(){
-
-    }
-
-    private void backward(){
-
-    }
-
-    private void rotateLeft(){
-
-    }
-
-    private void rotateRight(){
-
     }
 
     @Override
